@@ -15,12 +15,15 @@ def get_book_text(path):
     with open(path) as f:
         return f.read()
     
-def count_letters(text):
-    lowercase_input = text.lower()
-    freq = {}
-    for c in set(lowercase_input):
-       freq[c] = lowercase_input.count(c)
-    return freq
+def get_chars_dict(text):
+    chars = {}
+    for c in text:
+        lowered = c.lower()
+        if lowered in chars:
+            chars[lowered] += 1
+        else:
+            chars[lowered] = 1
+    return chars
 
 
 main()
