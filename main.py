@@ -2,46 +2,39 @@ def main():
     book_path = "books/frankenstein.txt"
     text = get_book_text(book_path)
     num_words = get_num_words(text)
-    chars_dict = get_chars_dict(text)
-    chars_sorted_list = chars_dict_to_sorted_list(chars_dict)
-
+    # print(get_chars_dict(text))
     print(f"--- Begin report of {book_path} ---")
     print(f"{num_words} words found in the document")
-    print()
-
-    for item in chars_sorted_list:
-        if not item["char"].isalpha():
-            continue
-        print(f"The '{item['char']}' character was found {item['num']} times")
-
-    print("--- End report ---")
+    print("")
+    print(characters_found(count_letters(text)))
+    print(f"--- End report ---")
 
 
 def get_num_words(text):
     words = text.split()
     return len(words)
     
-def get_chars_dict(text):
-    chars = {}
-    for c in text:
-        lowered = c.lower()
-        if lowered in chars:
-            chars[lowered] += 1
-        else:
-            chars[lowered] = 1
-    return chars
+def count_letters(text):
+    lowercase_input = text.lower()
+    freq = {}
+    for c in set(lowercase_input):
+       freq[c] = lowercase_input.count(c)
+    return freq
 
-
-def sort_on(d):
-    return d["num"]
-
-
-def chars_dict_to_sorted_list(num_chars_dict):
-    sorted_list = []
-    for ch in num_chars_dict:
-        sorted_list.append({"char": ch, "num": num_chars_dict[ch]})
-    sorted_list.sort(reverse=True, key=sort_on)
-    return sorted_list
+def characters_found(dict):
+    list = []
+    for letter in dict:
+      if letter.isalpha():
+        new_dict = {}
+        count = dict[letter]
+        new_dict["letter"] = letter
+        new_dict["count"] = count
+        list.append(new_dict)
+    def sort_on(letter_dictionary):
+      return letter_dictionary["count"]
+    list.sort(reverse=True, key=sort_on)
+    for letter in list:
+        print(f"The '{letter["letter"]}' was found {letter["count"]} times")
 
 
 def get_book_text(path):
